@@ -1,0 +1,52 @@
+<div class="title">
+    <h1>Employee Management System</h1>
+    <button class="btn" (click)="onAdd()">Add Employee</button>
+</div>
+
+<div class="employee-container">
+    <!-- Employee List -->
+    <div class="employee-list">
+        <div class="employee-card" *ngFor="let emp of employees">
+            <img [src]="emp.avatar" alt="{{ emp.name }}" />
+            <h3>{{ emp.name }}</h3>
+            <p>{{ emp.designation }}</p>
+            <div class="actions">
+                <button class="view-btn" (click)="onView(emp)">View</button>
+                <button class="edit-btn" (click)="onEdit(emp)">Edit</button>
+                <button class="del-btn" (click)="onDelete(emp)">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adding/Updating Employee details -->
+    <div class="modal-backdrop" *ngIf="isEditing">
+        <div class="form-content">
+            <app-employee-form [employee]="selectedEmployee" (save)="onSave($event)" (cancel)="isEditing = false">
+            </app-employee-form>
+        </div>
+    </div>
+
+    <!-- Show view details -->
+    <div class="modal-backdrop" *ngIf="isViewing">
+        <div class="employee-content">
+            <h2>{{ selectedEmployee?.name }}</h2>
+            <img [src]="selectedEmployee?.avatar" alt="Avatar" style="width:100px;height:100px;border-radius:50%">
+            <p><strong>Company:</strong> {{ selectedEmployee?.company }}</p>
+            <p><strong>Email:</strong> {{ selectedEmployee?.emailId }}</p>
+            <p><strong>Contact:</strong> {{ selectedEmployee?.contactNo }}</p>
+            <p><strong>Designation:</strong> {{ selectedEmployee?.designation }}</p>
+            <button class="close-btn" (click)="onCancelView()">Close</button>
+        </div>
+    </div>
+
+    <!-- show confirmation modal to delete employee -->
+    <div *ngIf="isDeleting" class="modal-backdrop">
+        <div class="delete-employee">
+            <p>Are you sure you want to delete {{ selectedEmployee?.name }}?</p>
+            <div class="buttons">
+                <button class="yes-btn" (click)="confirmDelete(true)">Yes</button>
+                <button class="no-btn" (click)="confirmDelete(false)">No</button>
+            </div>
+        </div>
+    </div>
+</div>
